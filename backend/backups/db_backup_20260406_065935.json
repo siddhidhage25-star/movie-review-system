@@ -1,0 +1,202 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Admin User",
+      "email": "admin@system.com",
+      "password": "pbkdf2:sha256:600000$TVyo2rap0CNu1725$f30a9aec0360b0dafb0eba6ced41887fa5c87909e84687d43792c0c04a194c78",
+      "role": "admin",
+      "last_login": "2026-04-06T06:46:16.940153",
+      "created_at": "2026-04-06T05:57:05.993475"
+    },
+    {
+      "id": 2,
+      "name": "Guest User",
+      "email": "guest@guest.com",
+      "password": "scrypt:32768:8:1$A8DkYkKGhEOQONt0$c9e647cb39b7d67827d9eddae9b903bd35f485ed557b8e80e900b7ae432c4792fa4d01845255f415ba8f6ecb2a63cdc09d827677017a290aef1682252436686b",
+      "role": "user",
+      "last_login": null,
+      "created_at": "2026-04-06T06:49:09.830669"
+    },
+    {
+      "id": 4,
+      "name": "Siddhi Hage",
+      "email": "siddhidhage25@gmail.com",
+      "password": "scrypt:32768:8:1$8jpnw9lULkVRZGPm$9c501f7298725a21ca5cfc95dc18d5e5f15196879c5b7e6e983a6319dae748c12fb0f54e31adf102405359903b0f1c331a64f915a6578d7d0978dbfaef603b86",
+      "role": "user",
+      "last_login": null,
+      "created_at": "2026-04-06T06:54:34.522136"
+    }
+  ],
+  "movies": [
+    {
+      "id": 93,
+      "title": "The Batman",
+      "description": "A dark detective thriller with gritty action and intense atmosphere.",
+      "release_date": "2022",
+      "genre": "Action, Crime",
+      "rating": 8.2,
+      "poster_url": "/static/images/posters/the_batman.jpg",
+      "trailer_url": "https://www.youtube.com/embed/mqqft2x_Aa4",
+      "created_at": "2026-04-06T06:55:01.941705"
+    },
+    {
+      "id": 94,
+      "title": "Dune: Part Two",
+      "description": "Epic science-fiction drama with breathtaking visuals and sweeping scale.",
+      "release_date": "2024",
+      "genre": "Sci-Fi, Adventure",
+      "rating": 8.6,
+      "poster_url": "/static/images/posters/dune_part_two.jpg",
+      "trailer_url": "https://www.youtube.com/embed/Way9Dexny3w",
+      "created_at": "2026-04-06T06:55:01.941711"
+    },
+    {
+      "id": 95,
+      "title": "Oppenheimer",
+      "description": "A historical biopic that explores ambition, consequence, and moral conflict.",
+      "release_date": "2023",
+      "genre": "Drama, History",
+      "rating": 8.4,
+      "poster_url": "/static/images/posters/oppenheimer.jpg",
+      "trailer_url": "https://www.youtube.com/embed/uYPbbksJxIg",
+      "created_at": "2026-04-06T06:55:01.941713"
+    },
+    {
+      "id": 96,
+      "title": "Spider-Man: Across the Spider-Verse",
+      "description": "A visually stunning animated adventure with heart and humor.",
+      "release_date": "2023",
+      "genre": "Animation, Action",
+      "rating": 8.9,
+      "poster_url": "/static/images/posters/spider-man_across_the_spider-verse.jpg",
+      "trailer_url": "https://www.youtube.com/embed/cqGjhVJWtEg",
+      "created_at": "2026-04-06T06:55:01.941715"
+    },
+    {
+      "id": 97,
+      "title": "Guardians of the Galaxy Vol. 3",
+      "description": "A heartfelt space opera with humor, action, and emotional stakes.",
+      "release_date": "2023",
+      "genre": "Action, Sci-Fi",
+      "rating": 8.1,
+      "poster_url": "/static/images/posters/guardians_of_the_galaxy_vol_3.jpg",
+      "trailer_url": "https://www.youtube.com/embed/u3V5KDHRQvk",
+      "created_at": "2026-04-06T06:55:01.941717"
+    },
+    {
+      "id": 98,
+      "title": "Deadpool & Wolverine",
+      "description": "A wild superhero adventure packed with irreverent humor and action.",
+      "release_date": "2024",
+      "genre": "Action, Comedy",
+      "rating": 8.5,
+      "poster_url": "/static/images/posters/deadpool_and_wolverine.jpg",
+      "trailer_url": "https://www.youtube.com/embed/73_1biulkYk",
+      "created_at": "2026-04-06T06:55:01.941718"
+    },
+    {
+      "id": 99,
+      "title": "John Wick: Chapter 4",
+      "description": "A stylish action thriller built on precise fight choreography and momentum.",
+      "release_date": "2023",
+      "genre": "Action, Thriller",
+      "rating": 8.3,
+      "poster_url": "/static/images/posters/john_wick_chapter_4.jpg",
+      "trailer_url": "https://www.youtube.com/embed/qEVUtrk8_B4",
+      "created_at": "2026-04-06T06:55:01.941720"
+    },
+    {
+      "id": 100,
+      "title": "Avatar: The Way of Water",
+      "description": "A visually immersive sci-fi adventure with oceanic wonder and drama.",
+      "release_date": "2022",
+      "genre": "Sci-Fi, Adventure",
+      "rating": 7.8,
+      "poster_url": "/static/images/posters/avatar_the_way_of_water.jpg",
+      "trailer_url": "https://www.youtube.com/embed/d9MyW72ELq0",
+      "created_at": "2026-04-06T06:55:01.941721"
+    },
+    {
+      "id": 101,
+      "title": "Inside Out 2",
+      "description": "A heartfelt animated film that brings new emotions and family moments to life.",
+      "release_date": "2024",
+      "genre": "Animation, Family",
+      "rating": 7.9,
+      "poster_url": "/static/images/posters/inside_out_2.jpg",
+      "trailer_url": "https://www.youtube.com/embed/LEjhY15eCx0",
+      "created_at": "2026-04-06T06:55:01.941723"
+    }
+  ],
+  "reviews": [
+    {
+      "id": 30,
+      "user_id": 1,
+      "movie_id": 94,
+      "rating": 5,
+      "review_text": "Epic storytelling with stunning visuals and world-building.",
+      "created_at": "2026-04-06T06:55:01.950738"
+    },
+    {
+      "id": 31,
+      "user_id": 1,
+      "movie_id": 98,
+      "rating": 4,
+      "review_text": "Fun and chaotic superhero entertainment with great humor.",
+      "created_at": "2026-04-06T06:55:01.953508"
+    },
+    {
+      "id": 32,
+      "user_id": 1,
+      "movie_id": 96,
+      "rating": 5,
+      "review_text": "One of the best animated films with incredible style and heart.",
+      "created_at": "2026-04-06T06:55:01.955202"
+    }
+  ],
+  "watchlists": [
+    {
+      "id": 8,
+      "user_id": 2,
+      "movie_id": 93,
+      "added_at": "2026-04-06T06:55:01.966202"
+    },
+    {
+      "id": 9,
+      "user_id": 2,
+      "movie_id": 96,
+      "added_at": "2026-04-06T06:55:01.969615"
+    },
+    {
+      "id": 10,
+      "user_id": 4,
+      "movie_id": 94,
+      "added_at": "2026-04-06T06:55:01.973696"
+    },
+    {
+      "id": 11,
+      "user_id": 4,
+      "movie_id": 95,
+      "added_at": "2026-04-06T06:55:01.976182"
+    },
+    {
+      "id": 12,
+      "user_id": 4,
+      "movie_id": 99,
+      "added_at": "2026-04-06T06:55:01.978564"
+    }
+  ],
+  "login_activity": [
+    {
+      "id": 7,
+      "user_id": 2,
+      "login_time": "2026-04-06T06:55:01.959369"
+    },
+    {
+      "id": 8,
+      "user_id": 4,
+      "login_time": "2026-04-06T06:55:01.959372"
+    }
+  ]
+}
