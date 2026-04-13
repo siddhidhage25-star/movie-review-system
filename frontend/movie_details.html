@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block title %}Movie Details - MovieVerse{% endblock %}
+
+{% block content %}
+<div class="movie-detail-hero" style="background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.9)), url('{{ movie.poster_url }}') center/cover no-repeat;">
+    <img src="{{ movie.poster_url }}" 
+         alt="{{ movie.title }} Poster" 
+         class="detail-poster"
+         loading="lazy"
+         onerror="handleImageError(this, '{{ movie.title }}')">
+    <div class="detail-info">
+        <span style="background-color: var(--primary-color); padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.8rem; margin-bottom: 1rem; display: inline-block;">MOVIE</span>
+        <h1>{{ movie.title }} ({{ movie.release_date }})</h1>
+        <div class="detail-meta">
+            <span>{{ movie.genre }}</span>
+            <span style="color: var(--accent-color); font-weight: bold;"><i class="fas fa-star"></i> {{ movie.rating }}/10</span>
+        </div>
+        <p class="detail-description">
+            {{ movie.description }}
+        </p>
+        <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+            {% if movie.trailer_url %}
+            <a href="/movie/{{ movie.id }}/trailer" class="btn btn-primary"><i class="fas fa-play"></i> Watch Trailer</a>
+            {% else %}
+            <button class="btn btn-primary" disabled style="opacity: 0.5; cursor: not-allowed;"><i class="fas fa-play"></i> Trailer Unavailable</button>
+            {% endif %}
+            
+            {% if current_user.is_authenticated %}
+            <form action="/watchlist/add/{{ movie.id }}" method="POST" style="display: inline;">
+                <button type="submit" class="btn btn-outline"><i class="fas fa-plus"></i> Add to Watchlist</button>
+            </form>
+            {% else %}
+            <a href="/login" class="btn btn-outline"><i class="fas fa-plus"></i> Add to Watchlist</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="reviews-section">
+    <h2 class="section-title">User Reviews</h2>
+    
+    {% if current_user.is_authenticated %}
+    <div class="add-review-card">
+        <h3>Share Your Thoughts</h3>
+        <form action="/add_review/{{ movie.id }}" method="POST" style="margin-top: 1.5rem;">
+            <div class="form-group">
+                <label>Your Rating</label>
+                <div class="rating-input" id="star-rating">
+                    <i class="far fa-star" data-rating="1"></i>
+                    <i class="far fa-star" data-rating="2"></i>
+                    <i class="far fa-star" data-rating="3"></i>
+                    <i class="far fa-star" data-rating="4"></i>
+                    <i class="far fa-star" data-rating="5"></i>
+                </div>
+                <input type="hidden" name="rating" id="rating-value" value="5" required>
+            </div>
+            <div class="form-group">
+                <label for="review">Your Review</label>
+                <textarea id="review" name="review" class="form-control" rows="4" placeholder="Write your thoughts about the movie..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit Review</button>
+        </form>
+    </div>
+    {% else %}
+    <div class="add-review-card" style="text-align: center;">
+        <p>Please <a href="/login" style="color: var(--primary-color); font-weight: bold;">Login</a> to add a review.</p>
+    </div>
+    {% endif %}
+
+    <div class="review-list">
+        {% for review in reviews %}
+        <div class="review-card">
+            <div class="review-header">
+                <div class="reviewer-info">
+                    <div class="reviewer-avatar">{{ review.author.name[0].upper() }}</div>
+                    <div class="reviewer-name">{{ review.author.name }}</div>
+                </div>
+                <div class="movie-rating">
+                    <i class="fas fa-star"></i>
+                    <span>{{ review.rating }}/5</span>
+                </div>
+            </div>
+            <p style="color: var(--muted-text); font-size: 0.9rem; margin-bottom: 1rem;">{{ review.created_at.strftime('%B %d, %Y') }}</p>
+            <p>{{ review.review_text }}</p>
+        </div>
+        {% else %}
+        <p style="text-align: center; color: var(--muted-text);">No reviews yet. Be the first to review!</p>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    const stars = document.querySelectorAll('#star-rating i');
+    const ratingInput = document.getElementById('rating-value');
+
+    stars.forEach(star => {
+        star.addEventListener('click', () => {
+            const rating = star.getAttribute('data-rating');
+            ratingInput.value = rating;
+            
+            stars.forEach(s => {
+                const sRating = s.getAttribute('data-rating');
+                if (sRating <= rating) {
+                    s.classList.remove('far');
+                    s.classList.add('fas');
+                } else {
+                    s.classList.remove('fas');
+                    s.classList.add('far');
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

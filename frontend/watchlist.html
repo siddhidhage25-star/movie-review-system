@@ -1,0 +1,292 @@
+{% extends "base.html" %}
+
+{% block title %}My Watchlist - MovieVerse{% endblock %}
+
+{% block content %}
+<section class="section-container" style="padding-top: 100px;">
+    <div class="section-header">
+        <h2 class="section-title">My Watchlist</h2>
+        <a href="/movies" style="color: var(--primary-color); font-weight: 600;"><i class="fas fa-search"></i> Browse Movies</a>
+    </div>
+
+    {% if movies %}
+    <div class="watchlist-grid">
+        {% for movie in movies %}
+        <div class="watchlist-card">
+            <div class="watchlist-poster" onclick="location.href='/movie/{{ movie.id }}'" style="cursor: pointer;">
+                <img src="{{ movie.poster_url }}"
+                     alt="{{ movie.title }} Poster"
+                     class="watchlist-poster-img"
+                     loading="lazy"
+                     onerror="handleImageError(this, '{{ movie.title }}')">
+            </div>
+            <div class="watchlist-info">
+                <div class="watchlist-details">
+                    <h3 class="watchlist-movie-title" onclick="location.href='/movie/{{ movie.id }}'" style="cursor: pointer;">{{ movie.title }}</h3>
+                    <div class="watchlist-meta">
+                        <span><i class="fas fa-calendar"></i> {{ movie.release_date }}</span>
+                        <span><i class="fas fa-film"></i> {{ movie.genre }}</span>
+                    </div>
+                    <div class="watchlist-rating">
+                        <i class="fas fa-star"></i>
+                        <span>{{ movie.rating }}</span>
+                    </div>
+                </div>
+                <div class="watchlist-actions">
+                    <a href="/movie/{{ movie.id }}/trailer" class="btn-action btn-trailer">
+                        <i class="fas fa-play"></i>
+                        <span>Trailer</span>
+                    </a>
+                    <a href="/movie/{{ movie.id }}#reviews" class="btn-action btn-review">
+                        <i class="fas fa-comment-dots"></i>
+                        <span>Review</span>
+                    </a>
+                    <form method="POST" action="/watchlist/remove/{{ movie.id }}" class="remove-form-inline" onsubmit="return confirm('Remove {{ movie.title }} from your watchlist?');">
+                        <button type="submit" class="btn-action btn-remove">
+                            <i class="fas fa-times"></i>
+                            <span>Remove</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div style="text-align: center; padding: 6rem 2rem; background: var(--glass-background); border-radius: 20px; border: 1px solid var(--glass-border);">
+        <i class="fas fa-bookmark" style="font-size: 4rem; color: var(--primary-color); margin-bottom: 1.5rem;"></i>
+        <h3 style="font-size: 2rem; margin-bottom: 1rem;">Your Watchlist is Empty</h3>
+        <p style="color: var(--muted-text); font-size: 1.1rem; max-width: 600px; margin: 0 auto 2rem;">
+            Start adding movies to your watchlist to keep track of movies you want to watch later.
+        </p>
+        <a href="/movies" class="btn btn-primary" style="padding: 1rem 2.5rem; font-size: 1.1rem;">
+            <i class="fas fa-film"></i> Browse Movies
+        </a>
+    </div>
+    {% endif %}
+</section>
+
+<style>
+    /* Watchlist Grid Layout */
+    .watchlist-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(700px, 1fr));
+        gap: 1.5rem;
+        padding: 1rem 0;
+    }
+
+    @media (max-width: 768px) {
+        .watchlist-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* Watchlist Card */
+    .watchlist-card {
+        display: flex;
+        background: var(--card-background);
+        border-radius: 16px;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        box-shadow: var(--shadow-md);
+        transition: all 0.3s ease;
+        min-height: 200px;
+    }
+
+    .watchlist-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 24px rgba(229, 9, 20, 0.2), var(--shadow-lg);
+        border-color: rgba(229, 9, 20, 0.3);
+    }
+
+    /* Poster Section */
+    .watchlist-poster {
+        width: 140px;
+        min-width: 140px;
+        overflow: hidden;
+        background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+        position: relative;
+    }
+
+    .watchlist-poster-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: all 0.3s ease;
+    }
+
+    .watchlist-card:hover .watchlist-poster-img {
+        transform: scale(1.05);
+        filter: brightness(0.8);
+    }
+
+    /* Info Section */
+    .watchlist-info {
+        flex: 1;
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+
+    .watchlist-details {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+
+    .watchlist-movie-title {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--text-color);
+        margin: 0;
+        cursor: pointer;
+        transition: color 0.2s ease;
+        line-height: 1.3;
+    }
+
+    .watchlist-movie-title:hover {
+        color: var(--primary-color);
+    }
+
+    .watchlist-meta {
+        display: flex;
+        gap: 1.5rem;
+        font-size: 0.85rem;
+        color: var(--muted-text);
+        flex-wrap: wrap;
+    }
+
+    .watchlist-meta span {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+    .watchlist-meta i {
+        font-size: 0.8rem;
+    }
+
+    .watchlist-rating {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 700;
+        font-size: 0.95rem;
+        color: var(--accent-color);
+        background: rgba(245, 197, 24, 0.1);
+        padding: 0.4rem 0.8rem;
+        border-radius: 8px;
+        width: fit-content;
+    }
+
+    .watchlist-rating i {
+        font-size: 0.9rem;
+    }
+
+    /* Actions Section */
+    .watchlist-actions {
+        display: flex;
+        gap: 0.8rem;
+        flex-wrap: wrap;
+    }
+
+    .btn-action {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.7rem 1.2rem;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: none;
+        text-decoration: none;
+        color: white;
+        min-width: 120px;
+    }
+
+    .btn-action i {
+        font-size: 0.85rem;
+    }
+
+    .btn-trailer {
+        background: linear-gradient(135deg, #007bff, #0056b3);
+        border: 1px solid rgba(0, 123, 255, 0.4);
+    }
+
+    .btn-trailer:hover {
+        background: linear-gradient(135deg, #0056b3, #004085);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0, 123, 255, 0.4);
+    }
+
+    .btn-review {
+        background: linear-gradient(135deg, #28a745, #218838);
+        border: 1px solid rgba(40, 167, 69, 0.4);
+    }
+
+    .btn-review:hover {
+        background: linear-gradient(135deg, #218838, #1e7e34);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(40, 167, 69, 0.4);
+    }
+
+    .btn-remove {
+        background: rgba(220, 53, 69, 0.15);
+        border: 1px solid rgba(220, 53, 69, 0.4);
+        color: #dc3545;
+    }
+
+    .btn-remove:hover {
+        background: rgba(220, 53, 69, 0.3);
+        border-color: #dc3545;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(220, 53, 69, 0.3);
+    }
+
+    .remove-form-inline {
+        margin: 0;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .watchlist-card {
+            flex-direction: column;
+        }
+
+        .watchlist-poster {
+            width: 100%;
+            height: 250px;
+        }
+
+        .watchlist-actions {
+            justify-content: stretch;
+        }
+
+        .btn-action {
+            flex: 1;
+            min-width: auto;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .watchlist-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .watchlist-movie-title {
+            font-size: 1.1rem;
+        }
+
+        .btn-action {
+            padding: 0.6rem 0.8rem;
+            font-size: 0.85rem;
+            min-width: 100px;
+        }
+    }
+</style>
+{% endblock %}

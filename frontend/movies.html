@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+
+{% block title %}All Movies - MovieVerse{% endblock %}
+
+{% block content %}
+<section class="section-container" style="padding-top: 100px;">
+    <div class="section-header">
+        <h2 class="section-title">All Movies</h2>
+    </div>
+    
+    <div style="margin-bottom: 2rem; position: relative;">
+        <form action="/search" method="GET" id="search-form" style="display: flex; gap: 1rem; max-width: 500px;">
+            <input type="text" id="search-input" name="q" placeholder="Search movies by title or genre..." class="form-control" style="flex: 1;" autocomplete="off">
+            <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Search</button>
+        </form>
+        <div id="search-results-dropdown" style="display: none; position: absolute; top: 100%; left: 0; right: 100px; background: var(--card-background); border: 1px solid var(--glass-border); border-radius: 12px; margin-top: 0.5rem; max-height: 500px; overflow-y: auto; z-index: 1000; box-shadow: var(--shadow-lg);"></div>
+    </div>
+
+    {% if category %}
+    <div class="category-banner">
+        <h3>Category: {{ category|title }}</h3>
+        <p>{{ movies|length }} movie{{ 's' if movies|length != 1 }} found in this category.</p>
+    </div>
+    {% elif query %}
+    <div class="category-banner">
+        <h3>Search results for "{{ query }}"</h3>
+        <p>{{ movies|length }} result{{ 's' if movies|length != 1 }} found.</p>
+    </div>
+    {% endif %}
+
+    <div class="movie-grid">
+        {% for movie in movies %}
+        <div class="movie-card" onclick="location.href='/movie/{{ movie.id }}'">
+            <div class="movie-poster-container">
+                <!-- Rating Badge -->
+                <div class="movie-rating-badge">
+                    <i class="fas fa-star"></i>
+                    <span>{{ movie.rating }}</span>
+                </div>
+                
+                <!-- Movie Poster with Fallback -->
+                <img src="{{ movie.poster_url }}" 
+                     alt="{{ movie.title }} Poster" 
+                     class="movie-poster"
+                     loading="lazy"
+                     onerror="handleImageError(this, '{{ movie.title }}')">
+                
+                <!-- Hover Overlay -->
+                <div class="movie-overlay">
+                    <button class="btn btn-primary">
+                        <i class="fas fa-info-circle"></i> View Details
+                    </button>
+                </div>
+            </div>
+            <div class="movie-info">
+                <div class="movie-title">{{ movie.title }}</div>
+                <div class="movie-meta">
+                    <span><i class="fas fa-calendar"></i> {{ movie.release_date }} • {{ movie.genre }}</span>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <p style="grid-column: 1/-1; text-align: center; color: var(--muted-text); padding: 4rem 0;">
+            <i class="fas fa-film" style="font-size: 3rem; margin-bottom: 1rem; display: block;"></i>
+            No movies found.
+        </p>
+        {% endfor %}
+    </div>
+</section>
+
+<script>
+function handleImageError(img, movieTitle) {
+    // Show a styled placeholder with the movie title
+    img.onerror = null;
+    const container = img.parentElement;
+    container.style.background = 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)';
+    container.style.display = 'flex';
+    container.style.flexDirection = 'column';
+    container.style.alignItems = 'center';
+    container.style.justifyContent = 'center';
+    img.style.display = 'none';
+
+    const icon = document.createElement('i');
+    icon.className = 'fas fa-film';
+    icon.style.cssText = 'color: rgba(255,255,255,0.3); font-size: 3rem; margin-bottom: 1rem;';
+    container.appendChild(icon);
+
+    const text = document.createElement('div');
+    text.style.cssText = 'color: rgba(255,255,255,0.8); font-size: 0.95rem; font-weight: 600; text-align: center; padding: 0 1rem;';
+    text.textContent = movieTitle;
+    container.appendChild(text);
+}
+
+// Live Search Functionality
+(function() {
+    const searchInput = document.getElementById('search-input');
+    const dropdown = document.getElementById('search-results-dropdown');
+    let searchTimeout;
+
+    if (!searchInput || !dropdown) return;
+
+    searchInput.addEventListener('input', function() {
+        clearTimeout(searchTimeout);
+        const query = this.value.trim();
+
+        if (query.length < 1) {
+            dropdown.style.display = 'none';
+            return;
+        }
+
+        searchTimeout = setTimeout(() => {
+            fetch(`/api/search?q=${encodeURIComponent(query)}`)
+                .then(response => response.json())
+                .then(movies => {
+                    if (movies.length === 0) {
+                        dropdown.innerHTML = `
+                            <div style="padding: 2rem; text-align: center; color: var(--muted-text);">
+                                <i class="fas fa-search" style="font-size: 2rem; margin-bottom: 0.5rem; display: block;"></i>
+                                No movies found matching "${query}"
+                            </div>
+                        `;
+                    } else {
+                        dropdown.innerHTML = movies.map(movie => `
+                            <a href="/movie/${movie.id}" class="search-result-item" style="display: flex; align-items: center; gap: 1rem; padding: 0.8rem 1rem; border-bottom: 1px solid var(--glass-border); text-decoration: none; color: white; transition: background 0.2s;">
+                                <img src="${movie.poster_url || '/static/images/default-poster.jpg'}" 
+                                     alt="${movie.title}" 
+                                     style="width: 45px; height: 65px; object-fit: cover; border-radius: 6px; flex-shrink: 0;"
+                                     onerror="this.style.display='none'">
+                                <div style="flex: 1; min-width: 0;">
+                                    <div style="font-weight: 600; font-size: 0.95rem; margin-bottom: 0.3rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${movie.title}</div>
+                                    <div style="color: var(--muted-text); font-size: 0.8rem; display: flex; align-items: center; gap: 0.5rem;">
+                                        <span><i class="fas fa-film"></i> ${movie.genre || 'N/A'}</span>
+                                        <span style="color: var(--accent-color);"><i class="fas fa-star"></i> ${movie.rating}</span>
+                                    </div>
+                                </div>
+                            </a>
+                        `).join('');
+                    }
+                    dropdown.style.display = 'block';
+                })
+                .catch(error => {
+                    console.error('Search error:', error);
+                    dropdown.style.display = 'none';
+                });
+        }, 300);
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!searchInput.contains(e.target) && !dropdown.contains(e.target)) {
+            dropdown.style.display = 'none';
+        }
+    });
+
+    // Close dropdown on Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            dropdown.style.display = 'none';
+        }
+    });
+})();
+</script>
+
+<style>
+.search-result-item:hover {
+    background: var(--glass-background) !important;
+}
+
+#search-input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.2);
+}
+</style>
+{% endblock %}

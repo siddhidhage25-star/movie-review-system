@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Home - MovieVerse{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-content">
+        <h1>Welcome to MovieVerse</h1>
+        <p>Discover thousands of movies, share your thoughts with the community, and find your next favorite film. Join us today!</p>
+        <div class="hero-buttons">
+            <a href="/movies" class="btn btn-primary btn-explore"><i class="fas fa-film"></i> Explore Movies</a>
+            {% if not current_user.is_authenticated %}
+            <a href="/register" class="btn btn-outline btn-signup"><i class="fas fa-user-plus"></i> Get Started Free</a>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<section class="section-container">
+    <div class="section-header">
+        <h2 class="section-title">Why Choose MovieVerse?</h2>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-bottom: 4rem;">
+        <div class="info-card" style="background: var(--glass-background); padding: 2.5rem; border-radius: 20px; border: 1px solid var(--glass-border); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+            <i class="fas fa-film" style="font-size: 3.5rem; color: var(--primary-color); margin-bottom: 1.5rem;"></i>
+            <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">Extensive Movie Database</h3>
+            <p style="color: var(--muted-text);">Browse through thousands of movies from different genres, eras, and countries. Find classics, blockbusters, and hidden gems all in one place.</p>
+        </div>
+        <div class="info-card" style="background: var(--glass-background); padding: 2.5rem; border-radius: 20px; border: 1px solid var(--glass-border); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+            <i class="fas fa-star" style="font-size: 3.5rem; color: var(--accent-color); margin-bottom: 1.5rem;"></i>
+            <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">Rate & Review</h3>
+            <p style="color: var(--muted-text);">Share your opinions with detailed reviews and ratings. Help others discover great movies and get recognized for your insightful critiques.</p>
+        </div>
+        <div class="info-card" style="background: var(--glass-background); padding: 2.5rem; border-radius: 20px; border: 1px solid var(--glass-border); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+            <i class="fas fa-bookmark" style="font-size: 3.5rem; color: #007bff; margin-bottom: 1.5rem;"></i>
+            <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">Personal Watchlist</h3>
+            <p style="color: var(--muted-text);">Save movies you want to watch later. Build your personalized collection and never miss a film that catches your interest.</p>
+        </div>
+        <div class="info-card" style="background: var(--glass-background); padding: 2.5rem; border-radius: 20px; border: 1px solid var(--glass-border); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+            <i class="fas fa-users" style="font-size: 3.5rem; color: #28a745; margin-bottom: 1.5rem;"></i>
+            <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">Vibrant Community</h3>
+            <p style="color: var(--muted-text);">Connect with fellow movie enthusiasts. Read reviews from other users, discover trending movies, and join discussions.</p>
+        </div>
+        <div class="info-card" style="background: var(--glass-background); padding: 2.5rem; border-radius: 20px; border: 1px solid var(--glass-border); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+            <i class="fas fa-search" style="font-size: 3.5rem; color: #ff6b6b; margin-bottom: 1.5rem;"></i>
+            <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">Smart Search & Categories</h3>
+            <p style="color: var(--muted-text);">Find exactly what you're looking for with powerful search functionality and well-organized categories by genre.</p>
+        </div>
+        <div class="info-card" style="background: var(--glass-background); padding: 2.5rem; border-radius: 20px; border: 1px solid var(--glass-border); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+            <i class="fas fa-mobile-alt" style="font-size: 3.5rem; color: #9b59b6; margin-bottom: 1.5rem;"></i>
+            <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">Responsive Design</h3>
+            <p style="color: var(--muted-text);">Enjoy a seamless experience across all devices. Browse movies on your desktop, tablet, or phone with our modern, responsive interface.</p>
+        </div>
+    </div>
+</section>
+
+{% if not current_user.is_authenticated %}
+<section class="section-container" style="background-color: #1a1a1a;">
+    <div style="text-align: center; padding: 4rem 2rem; background: var(--glass-background); border-radius: 20px; border: 1px solid var(--glass-border); max-width: 800px; margin: 0 auto;">
+        <h2 style="font-size: 2.5rem; margin-bottom: 1.5rem;">Ready to Dive In?</h2>
+        <p style="color: var(--muted-text); font-size: 1.1rem; max-width: 600px; margin: 0 auto 2rem;">
+            Join thousands of movie lovers who share their thoughts and discover amazing films. It's free and takes just a few seconds!
+        </p>
+        <div style="display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap;">
+            <a href="/register" class="btn btn-primary" style="padding: 0.8rem 2rem; font-size: 1rem;"><i class="fas fa-user-plus"></i> Sign Up Free</a>
+            <a href="/login" class="btn btn-outline" style="padding: 0.8rem 2rem; font-size: 1rem;"><i class="fas fa-sign-in-alt"></i> Login</a>
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}

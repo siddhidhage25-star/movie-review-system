@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Categories - MovieVerse{% endblock %}
+
+{% block content %}
+<section class="section-container" style="padding-top: 100px;">
+    <div class="section-header">
+        <h2 class="section-title">Movie Categories</h2>
+    </div>
+
+    <div class="category-grid">
+        {% for genre in genres %}
+        <div class="category-card" onclick="location.href='/category/{{ genre|replace(' ', '-')|lower }}'">
+            <div class="category-card-icon">
+                <i class="fas fa-film"></i>
+            </div>
+            <h3>{{ genre }}</h3>
+            <p>{{ genres[genre] }} movies</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<style>
+    .category-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.75rem;
+        margin-bottom: 4rem;
+    }
+
+    .category-card {
+        background: var(--glass-background);
+        padding: 2rem;
+        border-radius: 22px;
+        border: 1px solid var(--glass-border);
+        cursor: pointer;
+        transition: all 0.35s ease;
+        text-align: center;
+        min-height: 220px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 1rem;
+    }
+
+    .category-card:hover {
+        transform: translateY(-6px);
+        border-color: var(--primary-color);
+        box-shadow: var(--shadow-lg);
+        background: rgba(255,255,255,0.08);
+    }
+
+    .category-card-icon {
+        width: 70px;
+        height: 70px;
+        margin: 0 auto;
+        display: grid;
+        place-items: center;
+        background: rgba(229, 9, 20, 0.1);
+        border-radius: 18px;
+        color: var(--primary-color);
+        font-size: 1.7rem;
+    }
+
+    .category-card h3 {
+        font-size: 1.2rem;
+        color: white;
+        margin-bottom: 0.4rem;
+    }
+
+    .category-card p {
+        color: var(--muted-text);
+        font-size: 0.95rem;
+    }
+</style>
+{% endblock %}
